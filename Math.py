@@ -9,6 +9,22 @@ conf = SparkConf().setMaster("local").setAppName("Differentiation")
 sc = SparkContext.getOrCreate(conf = conf)
 import math
 
+def cos(x: Tangent_Type):
+    return Tangent_Type(math.cos(x.v), -x.t*(math.sin(x.v)))
+
+def sin(x: Tangent_Type):
+    return Tangent_Type(math.sin(x.v), x.t*(math.cos(x.v)))
+
+def tan(x: Tangent_Type):
+    return Tangent_Type(math.tan(x.v), x.t*(1+math.tan(x.v)**2)**2)
+
+def exp(x: Tangent_Type):
+    return Tangent_Type(math.exp(x.v), x.t*math.exp(x.v))
+
+def log(x: Tangent_Type):
+    return Tangent_Type(math.log(x.v), x.t/x.v)
+
+
 class Tangent_Type:
     def __init__(self, v, t=0.0):
         self.v = v
@@ -33,6 +49,7 @@ class Tangent_Type:
         return Tangent_Type(self.v/x.v , self.t/x.v-(self.v*x.t)/(x.v*x.v))
 
     __rtruediv__ = __truediv__
+
 
 class Tangent_Mode:
     def __init__(self, n_input, n_output, f):
@@ -66,6 +83,7 @@ class Tangent_Mode:
         else:
             directionalDerivative[0,i] = y.t
         return directionalDerivative, y
+
 
 class Tangent_Mode_Distributed:
     def __init__(self, n_input, n_output, f):
@@ -101,3 +119,4 @@ class Tangent_Mode_Distributed:
         else:
             directionalDerivative[0] = y.t
         return loc_one, directionalDerivative
+        
