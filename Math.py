@@ -9,21 +9,6 @@ conf = SparkConf().setMaster("local").setAppName("Differentiation")
 sc = SparkContext.getOrCreate(conf = conf)
 import math
 
-def cos(x: Tangent_Type):
-    return Tangent_Type(math.cos(x.v), -x.t*(math.sin(x.v)))
-
-def sin(x: Tangent_Type):
-    return Tangent_Type(math.sin(x.v), x.t*(math.cos(x.v)))
-
-def tan(x: Tangent_Type):
-    return Tangent_Type(math.tan(x.v), x.t*(1+math.tan(x.v)**2)**2)
-
-def exp(x: Tangent_Type):
-    return Tangent_Type(math.exp(x.v), x.t*math.exp(x.v))
-
-def log(x: Tangent_Type):
-    return Tangent_Type(math.log(x.v), x.t/x.v)
-
 
 class Tangent_Type:
     def __init__(self, v, t=0.0):
@@ -31,24 +16,76 @@ class Tangent_Type:
         self.t = t
     
     def __add__(self, x): 
+        if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
         return Tangent_Type(self.v + x.v, self.t + x.t)
 
     __radd__ = __add__
 
     def __sub__(self, x):
+        if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
         return Tangent_Type(self.v - x.v, self.t - x.t)
     
-    __rsub__ = __sub__
+    def __rsub__(self, x):
+        if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
+        return Tangent_Type(x.v - self.v, x.t - self.t)
 
     def __mul__(self, x):
+        if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
         return Tangent_Type(self.v*x.v, self.v*x.t + self.t*x.v)
 
     __rmul__ = __mul__
 
     def __truediv__(self, x):
+        if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
         return Tangent_Type(self.v/x.v , self.t/x.v-(self.v*x.t)/(x.v*x.v))
 
-    __rtruediv__ = __truediv__
+    def __rtruediv__(self, x):
+        if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
+        return Tangent_Type(x.v/self.v , x.t/self.v-(x.v*self.t)/(self.v*self.v))
+
+    def __pow__(self, x):
+        if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
+        return Tangent_Type(self.v**x.v, self.t*x.v*self.v**(x.v-1) + math.log(self.v)*self.v**x.v*x.t)
+
+
+def cos(x):
+    if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
+    return Tangent_Type(math.cos(x.v), -x.t*(math.sin(x.v)))
+
+def sin(x):
+    if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
+    return Tangent_Type(math.sin(x.v), x.t*(math.cos(x.v)))
+
+def tan(x):
+    if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
+    return Tangent_Type(math.tan(x.v), x.t*(1+math.tan(x.v)**2)**2)
+
+def exp(x):
+    if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
+    return Tangent_Type(math.exp(x.v), x.t*math.exp(x.v))
+
+def log(x):
+    if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
+    return Tangent_Type(math.log(x.v), x.t/x.v)
+
+def pow(x, y):
+    if not isinstance(x, Tangent_Type):
+            x = Tangent_Type(x)
+    if not isinstance(y, Tangent_Type):
+            y = Tangent_Type(y)
+    return Tangent_Type(math.pow(x.v, y.v), x.t*y.v*x.v**(y.v-1) + math.log(x.v)*y.t*x.v**y.v)
 
 
 class Tangent_Mode:
