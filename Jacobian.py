@@ -1,4 +1,6 @@
-from Math import Tangent_Mode_Distributed, log
+from Math import *
+from AD import Tangent_Mode
+from AD_Distributed import Tangent_Mode_Distributed
 
 def f(x):
     return log(x[0]*x[1])
