@@ -114,14 +114,14 @@ class Tangent_Mode:
         x = list(map(Tangent_Type, x))
         for i, xi_t in enumerate(x_t):
             x[i].t = xi_t
-        directionalDerivative = np.zeros(shape=(self.n_output, self.n_input), dtype="float64")
+        directionalDerivative = np.zeros(shape=(self.n_output,), dtype="float64")
         y = self.f(x)
         if isinstance(y, Sequence):
             for j in range(self.n_output):
-                directionalDerivative[j,i] = y[j].t
+                directionalDerivative[j] = y[j].t
         else:
-            directionalDerivative[0,i] = y.t
-        return directionalDerivative, y
+            directionalDerivative[0] = y.t
+        return directionalDerivative, y.v
 
 
 class Tangent_Mode_Distributed:
