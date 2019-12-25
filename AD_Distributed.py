@@ -10,7 +10,7 @@ conf = SparkConf().setMaster("local").setAppName("Differentiation")
 sc = SparkContext.getOrCreate(conf = conf)
 
 
-class Tangent_Mode_Distributed:
+class Tangent_Mode:
     def __init__(self, n_input, n_output, f):
         self.n_input = n_input
         self.n_output = n_output
